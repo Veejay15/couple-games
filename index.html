@@ -31,8 +31,23 @@
     color: var(--text);
     font-family: Inter, system-ui, sans-serif;
     min-height: 100dvh;
+    overscroll-behavior-y: none;
   }
-  #app { max-width: 480px; margin: 0 auto; padding: 16px 16px calc(32px + env(safe-area-inset-bottom)); }
+  #app {
+    max-width: 480px; margin: 0 auto; min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column;
+    padding: max(14px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+
+  /* game screens: card in the middle, buttons pinned to the bottom within thumb reach */
+  .stage { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .actions {
+    position: sticky; bottom: 0; z-index: 2;
+    margin: 0 -16px; padding: 14px 16px max(4px, env(safe-area-inset-bottom));
+    background: linear-gradient(to bottom, rgba(20,6,11,0), var(--bg) 22px);
+  }
+  .actions .headline { margin-bottom: 10px; }
 
   /* top bar */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 0 14px; }
@@ -85,6 +100,8 @@
   .btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .row .btn + .btn { margin-top: 0; }
+  .row.small { margin-top: 8px; }
+  .row.small .btn { font-size: 12px; letter-spacing: .06em; padding: 13px 8px; }
   .link { display: block; margin: 16px auto 0; background: none; border: 0; color: var(--muted); font: 600 14px Inter, sans-serif; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 
   /* cards */
@@ -136,6 +153,48 @@
   .custom-list li small { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 3px; }
   .custom-list button { background: none; border: 0; color: var(--muted); font-size: 18px; cursor: pointer; padding: 0 4px; }
   .empty { color: var(--muted); text-align: center; font-size: 14px; margin-top: 14px; }
+
+  /* narrow phones (iPhone SE, small Androids) */
+  @media (max-width: 359px) {
+    .seg.roles { flex-basis: 104px; }
+    .btn { letter-spacing: .06em; font-size: 13px; }
+    .icon-btn { padding: 7px 10px; }
+    .brand { font-size: 16px; }
+    h1 { font-size: 38px; }
+  }
+
+  /* short screens: shrink the chrome so card + buttons fit without scrolling */
+  @media (max-height: 760px) {
+    .topbar { padding-bottom: 10px; }
+    .scores { margin-bottom: 10px; gap: 8px; }
+    .score { padding: 7px 11px; border-radius: 13px; }
+    .eyebrow { margin-bottom: 6px; }
+    .sub { margin-bottom: 10px; }
+    .card { padding: 18px 18px; min-height: 0; margin-bottom: 8px; border-radius: 22px; }
+    .card-badge { width: 42px; height: 42px; font-size: 20px; margin-bottom: 6px; }
+    .card-kind { margin-bottom: 10px; }
+    .card-text { font-size: clamp(21px, 5.8vw, 27px); }
+    .card-note { margin-top: 10px; font-size: 12px; }
+    .timer { margin-top: 12px; padding: 7px 16px; }
+    .btn { padding: 13px 16px; }
+    .btn + .btn { margin-top: 8px; }
+    .tile { aspect-ratio: 4/5; }
+    .logo { width: 64px; height: 64px; font-size: 30px; margin-top: 6px; }
+    h1 { font-size: 36px; }
+    .tag { margin-bottom: 14px; }
+  }
+  @media (max-height: 600px) {
+    .card-badge { display: none; }
+    .tile { aspect-ratio: auto; padding: 22px 0; }
+    .tile span { font-size: 30px; }
+    .actions { padding-top: 10px; }
+    .heat-pill { padding: 4px 10px; }
+  }
+  @media (max-height: 460px) {
+    .scores, .eyebrow { display: none; }
+    .card-text { font-size: 20px; }
+    .actions .headline { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -576,56 +635,70 @@ const views = {
 
   duel() {
     return topbar() + `
-      <p class="eyebrow">Round ${S.round} · Duel</p>
-      <div class="center" style="margin-bottom:14px">${heatPill()}</div>
-      ${cardHTML(S.card, "Duel", "⚔️", "Play it, then tap who lost.")}
-      <p class="headline">Who lost?</p>
-      <div class="fate" id="fate"></div>
-      <div class="row">
-        <button class="btn primary" data-act="lost" data-i="0">${esc(nm(0))}</button>
-        <button class="btn primary" data-act="lost" data-i="1">${esc(nm(1))}</button>
+      <div class="stage">
+        <p class="eyebrow">Round ${S.round} · Duel</p>
+        <div class="center" style="margin-bottom:12px">${heatPill()}</div>
+        ${cardHTML(S.card, "Duel", "⚔️")}
       </div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn ghost" data-act="fate">🎲 Let fate decide</button>
-        <button class="btn ghost" data-act="reduel">↻ Other duel</button>
+      <div class="actions">
+        <p class="headline">Play it. Who lost?</p>
+        <div class="fate" id="fate"></div>
+        <div class="row">
+          <button class="btn primary" data-act="lost" data-i="0">${esc(nm(0))}</button>
+          <button class="btn primary" data-act="lost" data-i="1">${esc(nm(1))}</button>
+        </div>
+        <div class="row small">
+          <button class="btn ghost" data-act="fate">🎲 Let fate decide</button>
+          <button class="btn ghost" data-act="reduel">↻ Other duel</button>
+        </div>
       </div>`;
   },
 
   choose() {
     const l = S.loser;
     return topbar() + `
-      <p class="eyebrow">Round ${S.round}</p>
-      <p class="headline"><b>${esc(nm(l))}</b>, you lost this one.</p>
-      <p class="sub">Truth or dare? ${esc(nm(winner()))} reads it to you.</p>
-      <div class="tiles">
-        <button class="tile truth" data-act="pick" data-v="truth"><span>💬</span>Truth<small>Answer honestly</small></button>
-        <button class="tile dare" data-act="pick" data-v="dare"><span>💋</span>Dare<small>No backing out</small></button>
-      </div>
-      <div class="center">${heatPill()}</div>`;
+      <div class="stage">
+        <p class="eyebrow">Round ${S.round}</p>
+        <p class="headline"><b>${esc(nm(l))}</b>, you lost this one.</p>
+        <p class="sub">Truth or dare? ${esc(nm(winner()))} reads it to you.</p>
+        <div class="tiles">
+          <button class="tile truth" data-act="pick" data-v="truth"><span>💬</span>Truth<small>Answer honestly</small></button>
+          <button class="tile dare" data-act="pick" data-v="dare"><span>💋</span>Dare<small>Or pass for a truth</small></button>
+        </div>
+        <div class="center">${heatPill()}</div>
+      </div>`;
   },
 
   card() {
     const l = S.loser, isTruth = S.kind === "truth";
     const intro = isTruth
-      ? `${S.swapped ? `${esc(nm(l))} passed on the dare, so it's a truth. ` : ""}<b>${esc(nm(winner()))}</b>, read this to ${esc(nm(l))}:`
+      ? `${S.swapped ? `${esc(nm(l))} passed on the dare. ` : ""}<b>${esc(nm(winner()))}</b>, read this to ${esc(nm(l))}:`
       : `<b>${esc(nm(l))}</b>, your dare:`;
+    const pass = `<button class="btn ghost" data-act="pass" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Pass (${S.passes[l]} left)` : "No passes left"}</button>`;
     return topbar() + `
-      <p class="eyebrow">Round ${S.round} · ${isTruth ? "Truth" : "Dare"}</p>
-      <p class="sub">${intro}</p>
-      ${cardHTML(S.card, isTruth ? "Truth" : "Dare", isTruth ? "💬" : "💋")}
-      <button class="btn primary" data-act="done">${isTruth ? "Answered ✓" : "Done ✓"}</button>
-      ${isTruth ? "" : `<button class="btn ghost" data-act="totruth">Pass on the dare — take a Truth instead</button>`}
-      <button class="btn ghost" data-act="pass" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Use a pass (${S.passes[l]} left)` : "No passes left — you have to"}</button>`;
+      <div class="stage">
+        <p class="eyebrow">Round ${S.round} · ${isTruth ? "Truth" : "Dare"}</p>
+        <p class="sub">${intro}</p>
+        ${cardHTML(S.card, isTruth ? "Truth" : "Dare", isTruth ? "💬" : "💋")}
+      </div>
+      <div class="actions">
+        <button class="btn primary" data-act="done">${isTruth ? "Answered ✓" : "Done ✓"}</button>
+        ${isTruth ? pass : `<div class="row small"><button class="btn ghost" data-act="totruth">Swap for a Truth</button>${pass}</div>`}
+      </div>`;
   },
 
   hot() {
     const l = S.loser, w = winner();
     return topbar() + `
-      <p class="eyebrow">Round ${S.round} · Hot Seat</p>
-      <p class="sub"><b>${esc(nm(w))}</b> asks. <b>${esc(nm(l))}</b> answers.</p>
-      ${cardHTML(S.card, "Hot question", "🔥", S.card.for === "both" ? `Brave bonus: ${esc(nm(w))} answers it too.` : "")}
-      <button class="btn primary" data-act="answered">Answered — next round</button>
-      <button class="btn ghost" data-act="passhot" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Use a pass (${S.passes[l]} left)` : "No passes left — you have to"}</button>`;
+      <div class="stage">
+        <p class="eyebrow">Round ${S.round} · Hot Seat</p>
+        <p class="sub"><b>${esc(nm(w))}</b> asks. <b>${esc(nm(l))}</b> answers.</p>
+        ${cardHTML(S.card, "Hot question", "🔥", S.card.for === "both" ? `Brave bonus: ${esc(nm(w))} answers it too.` : "")}
+      </div>
+      <div class="actions">
+        <button class="btn primary" data-act="answered">Answered — next round</button>
+        <button class="btn ghost" data-act="passhot" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Pass (${S.passes[l]} left)` : "No passes left"}</button>
+      </div>`;
   },
 
   end() {
@@ -640,12 +713,16 @@ const views = {
              <div class="card h3"><div class="card-badge">🎁</div><div class="card-kind">Final forfeit</div><p class="card-text">${esc(S.forfeit).replace(/\{winner\}/g, `<b>${esc(nm(1 - loser))}</b>`)}</p></div>`;
     }
     return `
-      <div class="logo">💞</div>
-      <h1 style="font-size:36px">That's a night.</h1>
-      <p class="tag">${esc(nm(0))} lost ${a} · ${esc(nm(1))} lost ${b}</p>
-      ${msg}
-      <button class="btn primary" data-act="again">Play again</button>
-      <button class="btn ghost" data-act="home">Back to start</button>`;
+      <div class="stage">
+        <div class="logo">💞</div>
+        <h1 style="font-size:36px">That's a night.</h1>
+        <p class="tag">${esc(nm(0))} lost ${a} · ${esc(nm(1))} lost ${b}</p>
+        ${msg}
+      </div>
+      <div class="actions">
+        <button class="btn primary" data-act="again">Play again</button>
+        <button class="btn ghost" data-act="home">Back to start</button>
+      </div>`;
   },
 
   custom() {
