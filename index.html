@@ -70,7 +70,12 @@
   .seg button { background: rgba(0,0,0,.3); border: 1px solid var(--line); color: var(--text); border-radius: 14px; padding: 12px 8px; font: 600 14px Inter, sans-serif; cursor: pointer; }
   .seg button small { display: block; color: var(--muted); font-weight: 400; font-size: 11px; margin-top: 2px; }
   .seg button.on { border-color: var(--pink); background: rgba(255,61,127,.16); box-shadow: 0 0 16px rgba(255,61,127,.3); }
-  .seg.three { grid-template-columns: repeat(3, 1fr); }
+  .seg button.wide { grid-column: 1 / -1; }
+  .name-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .name-row input { margin-bottom: 0; flex: 1; min-width: 0; }
+  .seg.roles { margin: 0; flex: 0 0 132px; gap: 6px; }
+  .seg.roles button { padding: 0 6px; }
+  .card.h4 { background: linear-gradient(160deg, #2a0c2e, #0d040b 70%); border-color: rgba(200,90,255,.6); box-shadow: 0 0 50px rgba(170,60,255,.35), inset 0 0 40px rgba(170,60,255,.1); }
 
   /* buttons */
   .btn { display: block; width: 100%; border: 0; border-radius: 999px; padding: 16px 18px; font: 800 14px Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--text); cursor: pointer; }
@@ -140,7 +145,8 @@
 /* ---------------------------------------------------------------
    CARDS — edit freely. Use {winner} / {loser} to insert names.
    Add "|30" at the end to show a 30-second timer on that card.
-   Heat: 1 = Playful, 2 = Spicy, 3 = Hot
+   Start with "her:" or "him:" to only show it when she / he is the loser.
+   Heat: 1 = Playful, 2 = Spicy, 3 = Hot, 4 = After Dark
 ---------------------------------------------------------------- */
 const CARDS = {
   duel: {
@@ -172,6 +178,12 @@ const CARDS = {
       "Blindfold each other in turn and guess where you're being kissed, three times each. Most misses loses.",
       "Lock eyes and say \"I want you\" in your most serious voice. First to laugh loses.",
       "Each of you describes your favorite night together in one sentence. Whoever blushes first loses."
+    ],
+    4: [
+      "Undress each other one piece at a time, taking turns. Whoever is fully undressed first loses.",
+      "Take turns kissing each other's neck for 30 seconds. First to moan loses.|30",
+      "Touch each other anywhere you like for 60 seconds, but no kissing. First to kiss loses.|60",
+      "Take turns whispering exactly what you want tonight, in detail. First to look away loses."
     ]
   },
 
@@ -217,6 +229,23 @@ const CARDS = {
       "What's my most seductive look, and when do I give it?",
       "What part of our intimacy do you never want to change?",
       "Slow and teasing, or fast and intense — tonight?"
+    ],
+    4: [
+      "her: If I gave you permission to have sex with another man, would you do it?",
+      "him: If I gave you permission to have sex with another woman, would you do it?",
+      "Have you ever fantasized about someone else while we were together? What kind of person?",
+      "Would you ever want to watch me with someone else, or be watched?",
+      "Would you ever want a threesome? With another man, another woman, or never?",
+      "What's the most taboo thing you've ever fantasized about?",
+      "Is there something you've wanted to try in bed but were afraid I'd judge you for?",
+      "Have you ever faked it with me? Be honest.",
+      "If you could change one thing about our sex life, what would it be?",
+      "Toys: yes, no, or curious?",
+      "Do you like being in control, or being controlled? Which one tonight?",
+      "When was the last time you touched yourself thinking about me?",
+      "Would you ever want us to film or photograph ourselves, just for us?",
+      "her: Since we got married, has another man ever caught your eye? What was it about him?",
+      "him: Since we got married, has another woman ever caught your eye? What was it about her?"
     ]
   },
 
@@ -261,7 +290,30 @@ const CARDS = {
       "Let {winner} trace a trail with an ice cube (or a cold glass) anywhere they choose.",
       "For the next two rounds, {winner} decides where your hands go.",
       "Give {winner} a lap dance for one full song.",
-      "Kiss {winner} for 30 seconds like it's the last kiss of your life.|30"
+      "Kiss {winner} for 30 seconds like it's the last kiss of your life.|30",
+      "Kiss {winner}'s stomach slowly, working your way down to the waistband.|60",
+      "Take off {winner}'s top and kiss everywhere you uncover.",
+      "Whisper three things you want to do to {winner} tonight, in explicit detail.",
+      "Let {winner} put your hand wherever they want it for 30 seconds.|30",
+      "Kiss {winner} while sliding your hands under their clothes.|45",
+      "her: Give {winner} a lap dance in just your underwear.",
+      "him: Give {winner} a slow striptease down to your underwear."
+    ],
+    4: [
+      "Undress {winner} completely, slowly, one piece at a time.",
+      "Kiss {winner}'s inner thighs for one minute.|60",
+      "Blindfold {winner}. For 2 minutes, kiss and touch them anywhere you like.|120",
+      "Use only your mouth to explore {winner}'s body for 2 minutes.|120",
+      "Undress yourself in front of {winner} like it's a show. Eye contact the whole time.",
+      "Tell {winner}, in detail, what you'd do to them if the game ended right now.",
+      "Give {winner} a full-body oil massage. No clothes allowed.|300",
+      "Lie back with your hands at your sides. {winner} can do anything they want to you for 3 minutes.|180",
+      "Touch yourself for 30 seconds while {winner} watches.|30",
+      "Sit on {winner}'s lap facing them and kiss them until the timer runs out.|90",
+      "Act out one of {winner}'s fantasies for 2 minutes. They direct.|120",
+      "Let {winner} tie your wrists with a scarf or tie for the whole next round.",
+      "Pick any spot on {winner}'s body and kiss it until they tell you to stop.",
+      "Get into {winner}'s favorite position together and hold it for 60 seconds. No going further, yet.|60"
     ]
   },
 
@@ -295,6 +347,20 @@ const CARDS = {
       "We have the house to ourselves all weekend. What's the first thing you do?",
       "What's one thing I did once that you'd love an encore of?",
       "Tell me one thing you want before we fall asleep tonight."
+    ],
+    4: [
+      "her: If I gave you permission to have sex with another man, just once, would you?",
+      "him: If I gave you permission to have sex with another woman, just once, would you?",
+      "Would it turn you on or make you jealous to watch someone flirt with me?",
+      "What's a fantasy you've never said out loud because it felt too wild?",
+      "Where on your body do you want my mouth right now?",
+      "What's the dirtiest thing you've ever wanted me to say to you?",
+      "If you were blindfolded and tied up, what would you want me to do?",
+      "Rate our sex life from 1 to 10. What gets it to a 10?",
+      "Gentle or rough with you — and when?",
+      "What position do you want tonight?",
+      "Have you ever dreamed about being with someone else? Tell me about it.",
+      "What's one thing you'd want to try in bed this month?"
     ]
   }
 };
@@ -311,8 +377,10 @@ const FORFEITS = [
 const HEAT = {
   1: { name: "Playful", icon: "🥂" },
   2: { name: "Spicy", icon: "🌶️" },
-  3: { name: "Hot", icon: "🔥" }
+  3: { name: "Hot", icon: "🔥" },
+  4: { name: "After Dark", icon: "🖤" }
 };
+const LEVELS = [1, 2, 3, 4];
 const PASSES = 2;
 
 /* --------------------------- state --------------------------- */
@@ -326,40 +394,47 @@ function writeJSON(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
 }
 
-function freshGame(names = ["", ""], mode = "build") {
-  return { names, mode, round: 1, lost: [0, 0], passes: [PASSES, PASSES], loser: null, phase: "setup", card: null, kind: null, prev: null, forfeit: null };
+function freshGame(names = ["", ""], mode = "build", roles = ["her", "him"]) {
+  return { names, mode, roles, round: 1, lost: [0, 0], passes: [PASSES, PASSES], loser: null, phase: "setup", card: null, kind: null, prev: null, forfeit: null };
 }
 
 let S = readJSON(KEY, null) || freshGame();
+S.roles = S.roles || ["her", "him"];
 let custom = readJSON(CUSTOM_KEY, []);
 const decks = {};
 const save = () => writeJSON(KEY, S);
 
 const winner = () => S.loser === null ? null : 1 - S.loser;
 const nm = i => S.names[i] || (i === 0 ? "Player 1" : "Player 2");
-const heat = () => S.mode === "build" ? (S.round <= 3 ? 1 : S.round <= 6 ? 2 : 3) : Number(S.mode);
+const heat = () => S.mode === "build" ? (S.round <= 2 ? 1 : S.round <= 5 ? 2 : S.round <= 8 ? 3 : 4) : Number(S.mode);
+const FOR = { both: "Both of us", her: "Her only", him: "Him only" };
 
 /* --------------------------- decks --------------------------- */
-function parse(raw, h, type) {
-  const [text, secs] = raw.split("|");
-  return { text, s: secs ? Number(secs) : 0, h, type };
+function parse(raw, h, type, forWho) {
+  const m = raw.match(/^(her|him):\s*/);
+  const [text, secs] = (m ? raw.slice(m[0].length) : raw).split("|");
+  return { text, s: secs ? Number(secs) : 0, h, type, for: forWho || (m ? m[1] : "both") };
 }
-function pool(type, h) {
+function pool(type, h, role) {
   const all = [];
-  for (const lvl of [1, 2, 3]) for (const raw of CARDS[type][lvl]) all.push(parse(raw, lvl, type));
-  for (const c of custom) if (c.type === type) all.push(parse(c.text, c.h, type));
+  for (const lvl of LEVELS) for (const raw of CARDS[type][lvl] || []) all.push(parse(raw, lvl, type));
+  for (const c of custom) if (c.type === type) all.push(parse(c.text, c.h, type, c.for));
+  // Only cards meant for both of you, or for whoever is in the hot seat.
+  const mine = all.filter(c => c.for === "both" || c.for === role);
   // Duels draw from everything up to the current heat; the rest match the heat exactly.
-  let picked = all.filter(c => type === "duel" ? c.h <= h : c.h === h);
-  if (!picked.length) picked = all.filter(c => c.h <= h);
-  return picked.length ? picked : all;
+  let picked = mine.filter(c => type === "duel" ? c.h <= h : c.h === h);
+  if (!picked.length) picked = mine.filter(c => c.h <= h);
+  return picked.length ? picked : mine;
 }
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
 function draw(type) {
-  const h = heat(), key = type + h;
-  if (!decks[key] || !decks[key].length) decks[key] = shuffle(pool(type, h));
+  const h = heat();
+  const role = type === "duel" || S.loser === null ? "both" : S.roles[S.loser];
+  const key = type + h + role;
+  if (!decks[key] || !decks[key].length) decks[key] = shuffle(pool(type, h, role));
   return decks[key].pop();
 }
 
@@ -436,6 +511,9 @@ function topbar() {
 }
 
 function cardHTML(card, kind, badge, note = "") {
+  if (card.h === 4 && card.type !== "duel" && card.type !== "dare") {
+    note = "No judgment. Answering isn't agreeing — it's just between us." + (note ? "<br>" + note : "");
+  }
   return `
     <div class="card h${card.h}">
       <div class="card-badge">${badge}</div>
@@ -448,19 +526,20 @@ function cardHTML(card, kind, badge, note = "") {
 
 const views = {
   setup() {
-    const modes = [["build", "Let it build", "Playful → Hot"], ["1", "🥂 Playful", "Sweet & flirty"], ["2", "🌶️ Spicy", "Turn it up"], ["3", "🔥 Hot", "No warm-up"]];
+    const modes = [["build", "Let it build", "Playful → After Dark"], ["1", "🥂 Playful", "Sweet & flirty"], ["2", "🌶️ Spicy", "Turn it up"], ["3", "🔥 Hot", "No warm-up"], ["4", "🖤 After Dark", "Most intimate"]];
     const inProgress = S.round > 1 || S.lost[0] + S.lost[1] > 0;
+    const roleSeg = i => `<div class="seg roles">${["her", "him"].map(r => `<button data-act="role" data-i="${i}" data-v="${r}" class="${S.roles[i] === r ? "on" : ""}">${r === "her" ? "Her" : "Him"}</button>`).join("")}</div>`;
     return `
       <div class="logo">💞</div>
       <h1>Between Us</h1>
       <p class="tag">A private truth-or-dare night for two.<br>Start playful. Let the night build from there.</p>
       <div class="panel">
         <label for="n1">Player one</label>
-        <input type="text" id="n1" maxlength="20" placeholder="Your name" value="${esc(S.names[0])}" autocomplete="off">
+        <div class="name-row"><input type="text" id="n1" maxlength="20" placeholder="Your name" value="${esc(S.names[0])}" autocomplete="off">${roleSeg(0)}</div>
         <label for="n2">Player two</label>
-        <input type="text" id="n2" maxlength="20" placeholder="Their name" value="${esc(S.names[1])}" autocomplete="off">
+        <div class="name-row"><input type="text" id="n2" maxlength="20" placeholder="Their name" value="${esc(S.names[1])}" autocomplete="off">${roleSeg(1)}</div>
         <div class="label">Heat</div>
-        <div class="seg">${modes.map(([v, t, s]) => `<button data-act="mode" data-v="${v}" class="${String(S.mode) === v ? "on" : ""}">${t}<small>${s}</small></button>`).join("")}</div>
+        <div class="seg">${modes.map(([v, t, s]) => `<button data-act="mode" data-v="${v}" class="${String(S.mode) === v ? "on" : ""} ${v === "build" ? "wide" : ""}">${t}<small>${s}</small></button>`).join("")}</div>
         <button class="btn primary" data-act="start">${inProgress ? "Start a new night" : "Start the night"}</button>
         ${inProgress ? `<button class="btn ghost" data-act="resume">Continue round ${S.round}</button>` : ""}
       </div>
@@ -471,7 +550,8 @@ const views = {
           <li>The loser picks <b>Truth or Dare</b>. The winner reads it out.</li>
           <li>Then the loser takes the <b>Hot Seat</b>: one hot question from the winner. (Brave bonus: the winner answers it too.)</li>
           <li>You each get <b>${PASSES} passes</b> per game. Spend them wisely.</li>
-          <li>In "Let it build" mode the heat goes up every 3 rounds. Either of you can say "pause" at any time, no questions asked.</li>
+          <li>In "Let it build" mode the heat goes up as you play: Playful (rounds 1–2), Spicy (3–5), Hot (6–8), After Dark (9+). Either of you can say "pause" at any time, no questions asked.</li>
+          <li>Her / Him lets some cards go to just one of you, like a question only she gets asked.</li>
           <li>When you call it a night, whoever lost more rounds owes the other a <b>final forfeit</b>.</li>
         </ol>
       </details>
@@ -526,7 +606,7 @@ const views = {
     return topbar() + `
       <p class="eyebrow">Round ${S.round} · Hot Seat</p>
       <p class="sub"><b>${esc(nm(w))}</b> asks. <b>${esc(nm(l))}</b> answers.</p>
-      ${cardHTML(S.card, "Hot question", "🔥", `Brave bonus: ${esc(nm(w))} answers it too.`)}
+      ${cardHTML(S.card, "Hot question", "🔥", S.card.for === "both" ? `Brave bonus: ${esc(nm(w))} answers it too.` : "")}
       <button class="btn primary" data-act="answered">Answered — next round</button>
       <button class="btn ghost" data-act="passhot" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Use a pass (${S.passes[l]} left)` : "No passes left — you have to"}</button>`;
   },
@@ -555,7 +635,7 @@ const views = {
     const types = { truth: "Truth", dare: "Dare", hot: "Hot question", duel: "Duel" };
     const list = custom.length
       ? `<ul class="custom-list">${custom.map((c, i) => `
-          <li><div><small>${types[c.type]} · ${HEAT[c.h].icon} ${HEAT[c.h].name}</small>${esc(c.text.split("|")[0])}</div>
+          <li><div><small>${types[c.type]} · ${HEAT[c.h].icon} ${HEAT[c.h].name}${c.for && c.for !== "both" ? ` · ${FOR[c.for]}` : ""}</small>${esc(c.text.split("|")[0])}</div>
           <button data-act="del" data-i="${i}" aria-label="Delete">✕</button></li>`).join("")}</ul>`
       : `<p class="empty">No cards of your own yet.</p>`;
     return `
@@ -563,8 +643,10 @@ const views = {
       <div class="panel">
         <label for="ctype">Type</label>
         <select id="ctype">${Object.entries(types).map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select>
+        <label for="cfor">For</label>
+        <select id="cfor">${Object.entries(FOR).map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select>
         <div class="label">Heat</div>
-        <div class="seg three" id="cheat">${[1, 2, 3].map(h => `<button data-act="cheat" data-v="${h}" class="${h === customHeat ? "on" : ""}">${HEAT[h].icon} ${HEAT[h].name}</button>`).join("")}</div>
+        <div class="seg" id="cheat">${LEVELS.map(h => `<button data-act="cheat" data-v="${h}" class="${h === customHeat ? "on" : ""}">${HEAT[h].icon} ${HEAT[h].name}</button>`).join("")}</div>
         <label for="ctext">Card</label>
         <textarea id="ctext" maxlength="240" placeholder="e.g. Tell {winner} the moment you first knew. Add |60 at the end for a 60-second timer."></textarea>
         <button class="btn primary" data-act="add">Add card</button>
@@ -595,9 +677,15 @@ let fating = false;
 
 const actions = {
   mode(el) { S.mode = el.dataset.v; document.querySelectorAll("[data-act=mode]").forEach(b => b.classList.toggle("on", b === el)); save(); },
+  role(el) {
+    const i = Number(el.dataset.i);
+    S.roles[i] = el.dataset.v;
+    document.querySelectorAll(`[data-act=role][data-i="${i}"]`).forEach(b => b.classList.toggle("on", b === el));
+    save();
+  },
   start() {
     const n1 = document.getElementById("n1").value.trim(), n2 = document.getElementById("n2").value.trim();
-    S = freshGame([n1, n2], S.mode);
+    S = freshGame([n1, n2], S.mode, S.roles);
     S.card = draw("duel");
     S.phase = "duel";
     keepAwake();
@@ -639,8 +727,8 @@ const actions = {
     S.phase = "end";
     render();
   },
-  again() { S = freshGame(S.names, S.mode); S.card = draw("duel"); S.phase = "duel"; render(); },
-  home() { S = freshGame(S.names, S.mode); render(); },
+  again() { S = freshGame(S.names, S.mode, S.roles); S.card = draw("duel"); S.phase = "duel"; render(); },
+  home() { S = freshGame(S.names, S.mode, S.roles); render(); },
   custom() { S.prev = S.phase; S.phase = "custom"; render(); },
   back() { S.phase = S.prev && S.prev !== "custom" ? S.prev : "setup"; render(); },
   cheat(el) { customHeat = Number(el.dataset.v); document.querySelectorAll("[data-act=cheat]").forEach(b => b.classList.toggle("on", b === el)); },
@@ -649,11 +737,13 @@ const actions = {
     const text = box.value.trim();
     if (!text) { box.focus(); return; }
     const type = document.getElementById("ctype").value;
-    custom.push({ type, h: customHeat, text });
+    const forWho = document.getElementById("cfor").value;
+    custom.push({ type, h: customHeat, text, for: forWho });
     writeJSON(CUSTOM_KEY, custom);
     for (const k in decks) delete decks[k];
     render();
     document.getElementById("ctype").value = type;
+    document.getElementById("cfor").value = forWho;
   },
   del(el) {
     custom.splice(Number(el.dataset.i), 1);
