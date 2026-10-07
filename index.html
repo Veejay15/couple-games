@@ -232,18 +232,17 @@ const CARDS = {
     ],
     4: [
       "her: If I gave you permission to have sex with another man, would you do it?",
+      "her: If you had permission to have sex with another guy, would it be raw (no protection) or with protection?",
+      "her: Name a guy you'd want to have sex with, other than me. Actors and fictional characters don't count.",
       "him: If I gave you permission to have sex with another woman, would you do it?",
       "Have you ever fantasized about someone else while we were together? What kind of person?",
       "Would you ever want to watch me with someone else, or be watched?",
-      "Would you ever want a threesome? With another man, another woman, or never?",
       "What's the most taboo thing you've ever fantasized about?",
       "Is there something you've wanted to try in bed but were afraid I'd judge you for?",
-      "Have you ever faked it with me? Be honest.",
       "If you could change one thing about our sex life, what would it be?",
       "Toys: yes, no, or curious?",
       "Do you like being in control, or being controlled? Which one tonight?",
       "When was the last time you touched yourself thinking about me?",
-      "Would you ever want us to film or photograph ourselves, just for us?",
       "her: Since we got married, has another man ever caught your eye? What was it about him?",
       "him: Since we got married, has another woman ever caught your eye? What was it about her?"
     ]
@@ -350,8 +349,9 @@ const CARDS = {
     ],
     4: [
       "her: If I gave you permission to have sex with another man, just once, would you?",
+      "her: If you had permission to have sex with another guy, would it be raw (no protection) or with protection?",
+      "her: Name a guy you'd want to have sex with, other than me. Actors and fictional characters don't count.",
       "him: If I gave you permission to have sex with another woman, just once, would you?",
-      "Would it turn you on or make you jealous to watch someone flirt with me?",
       "What's a fantasy you've never said out loud because it felt too wild?",
       "Where on your body do you want my mouth right now?",
       "What's the dirtiest thing you've ever wanted me to say to you?",
@@ -716,7 +716,13 @@ const actions = {
   },
   reduel() { S.card = draw("duel"); render(); },
   pick(el) { S.kind = el.dataset.v; S.card = draw(S.kind); S.phase = "card"; render(); },
-  done() { S.card = draw("hot"); S.kind = "hot"; S.phase = "hot"; render(); },
+  done() {
+    // Truth and Hot Seat share a few questions; don't ask the same one twice in a round.
+    const prev = S.card && S.card.text;
+    let next = draw("hot");
+    for (let tries = 0; next.text === prev && tries < 3; tries++) next = draw("hot");
+    S.card = next; S.kind = "hot"; S.phase = "hot"; render();
+  },
   pass() { if (!S.passes[S.loser]) return; S.passes[S.loser]--; actions.done(); },
   answered() { nextRound(); render(); },
   passhot() { if (!S.passes[S.loser]) return; S.passes[S.loser]--; nextRound(); render(); },
