@@ -24,9 +24,7 @@ You can also add cards from the **✎ Cards** screen in the app. Those are saved
 
 1. Create a **private** GitHub repo and push this folder.
 2. Import it in Vercel. Framework preset: **Other**. No build command.
-3. In Vercel → Project → Settings → Environment Variables, add `GAME_PASSWORD` with a password you both know.
-4. Redeploy. When the site opens, the browser asks for a username and password. Type anything as the username and `GAME_PASSWORD` as the password.
 
-Without `GAME_PASSWORD` the site shows "Locked" to everyone, so it never opens without a password.
+There's no password. Anyone with the link can open it, so keep the link between the two of you. Search engines are told not to index it (`vercel.json` and the page's robots meta tag).
 
 On a phone, use **Share → Add to Home Screen** so it opens like an app.
