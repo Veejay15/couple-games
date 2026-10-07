@@ -5,7 +5,7 @@ A private truth-or-dare game for two. It's one static page (`index.html`) with n
 ## How a round works
 
 1. **Duel:** a quick mini-challenge (rock-paper-scissors, staring contest, a 20-second no-hands kiss…). Play it, then tap who lost, or let fate decide.
-2. **Truth or Dare:** the loser picks one, and the winner reads it out.
+2. **Truth or Dare:** the loser picks one, and the winner reads it out. Passing on a dare is free, but the loser has to answer a Truth instead.
 3. **Hot Seat:** the loser answers one hot question from the winner.
 4. Each player has 2 passes per game. In "Let it build" mode the heat rises as you play: Playful (rounds 1–2), Spicy (3–5), Hot (6–8), After Dark (9+). You can also pick a single heat level for the whole night.
 5. **End:** whoever lost more rounds owes the other a final forfeit.

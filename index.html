@@ -563,7 +563,7 @@ const views = {
         <summary>How to play ▾</summary>
         <ol>
           <li>Every round starts with a quick <b>duel</b>. Play it for real, then tap who lost. Can't agree? Let fate decide.</li>
-          <li>The loser picks <b>Truth or Dare</b>. The winner reads it out.</li>
+          <li>The loser picks <b>Truth or Dare</b>. The winner reads it out. Don't want the dare? Pass on it and take a Truth instead.</li>
           <li>Then the loser takes the <b>Hot Seat</b>: one hot question from the winner. (Brave bonus: the winner answers it too.)</li>
           <li>You each get <b>${PASSES} passes</b> per game. Spend them wisely.</li>
           <li>In "Let it build" mode the heat goes up as you play: Playful (rounds 1–2), Spicy (3–5), Hot (6–8), After Dark (9+). Either of you can say "pause" at any time, no questions asked.</li>
@@ -607,13 +607,14 @@ const views = {
   card() {
     const l = S.loser, isTruth = S.kind === "truth";
     const intro = isTruth
-      ? `<b>${esc(nm(winner()))}</b>, read this to ${esc(nm(l))}:`
+      ? `${S.swapped ? `${esc(nm(l))} passed on the dare, so it's a truth. ` : ""}<b>${esc(nm(winner()))}</b>, read this to ${esc(nm(l))}:`
       : `<b>${esc(nm(l))}</b>, your dare:`;
     return topbar() + `
       <p class="eyebrow">Round ${S.round} · ${isTruth ? "Truth" : "Dare"}</p>
       <p class="sub">${intro}</p>
       ${cardHTML(S.card, isTruth ? "Truth" : "Dare", isTruth ? "💬" : "💋")}
       <button class="btn primary" data-act="done">${isTruth ? "Answered ✓" : "Done ✓"}</button>
+      ${isTruth ? "" : `<button class="btn ghost" data-act="totruth">Pass on the dare — take a Truth instead</button>`}
       <button class="btn ghost" data-act="pass" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Use a pass (${S.passes[l]} left)` : "No passes left — you have to"}</button>`;
   },
 
@@ -731,7 +732,9 @@ const actions = {
     }, 90);
   },
   reduel() { S.card = draw("duel"); render(); },
-  pick(el) { S.kind = el.dataset.v; S.card = draw(S.kind); S.phase = "card"; render(); },
+  pick(el) { S.kind = el.dataset.v; S.swapped = false; S.card = draw(S.kind); S.phase = "card"; render(); },
+  // Refusing a dare is free, but the loser has to answer a truth instead.
+  totruth() { S.kind = "truth"; S.swapped = true; S.card = draw("truth"); render(); },
   done() {
     // Truth and Hot Seat share a few questions; don't ask the same one twice in a round.
     const prev = S.card && S.card.text;
