@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cut">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#14060b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Between Us">
+<title>Between Us</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💞</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14060b;
+    --text: #fff5f8;
+    --muted: #c9a3b2;
+    --line: rgba(255, 120, 170, .25);
+    --pink: #ff3d7f;
+    --pink-deep: #c2185b;
+    --gold: #f0c27b;
+    --fire: #ff6a3d;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: radial-gradient(circle at 50% -10%, #45122a 0%, #22091a 35%, var(--bg) 70%) fixed, var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, sans-serif;
+    min-height: 100dvh;
+  }
+  #app { max-width: 480px; margin: 0 auto; padding: 16px 16px calc(32px + env(safe-area-inset-bottom)); }
+
+  /* top bar */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 0 14px; }
+  .brand { font-family: 'Playfair Display', serif; font-weight: 800; letter-spacing: .02em; font-size: 18px; }
+  .brand span { color: var(--pink); }
+  .icon-btn { background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 8px 12px; font: 600 12px Inter, sans-serif; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+  .scores { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .score { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; }
+  .score.is-loser { border-color: var(--pink); box-shadow: 0 0 18px rgba(255,61,127,.35); }
+  .score .name { font-weight: 800; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .score .meta { color: var(--muted); font-size: 12px; margin-top: 2px; display: flex; justify-content: space-between; }
+  .dots { letter-spacing: 2px; color: var(--gold); }
+
+  /* type */
+  h1 { font-family: 'Playfair Display', serif; font-size: 44px; margin: 8px 0 6px; text-align: center; text-shadow: 0 0 30px rgba(255,61,127,.55); }
+  .tag { text-align: center; color: var(--muted); margin: 0 0 22px; line-height: 1.5; }
+  .eyebrow { text-align: center; text-transform: uppercase; letter-spacing: .22em; font-size: 11px; font-weight: 800; color: var(--muted); margin: 0 0 10px; }
+  .headline { text-align: center; font-weight: 800; font-size: 20px; margin: 0 0 6px; }
+  .sub { text-align: center; color: var(--muted); margin: 0 0 18px; font-size: 14px; line-height: 1.5; }
+  .sub b, .headline b, .card-text b { color: var(--pink); font-weight: inherit; }
+
+  .logo { width: 84px; height: 84px; margin: 18px auto 0; border-radius: 50%; display: grid; place-items: center; font-size: 40px;
+    background: radial-gradient(circle at 35% 30%, #ff7aa8, var(--pink-deep)); box-shadow: 0 0 40px rgba(255,61,127,.6), inset 0 0 0 3px rgba(255,255,255,.25); }
+
+  /* panels & inputs */
+  .panel { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 22px; padding: 18px; }
+  label, .label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); font-weight: 600; margin: 0 0 6px; }
+  input[type=text], textarea, select {
+    width: 100%; background: rgba(0,0,0,.35); border: 1px solid var(--line); color: var(--text); border-radius: 14px;
+    padding: 13px 14px; font: 16px Inter, sans-serif; margin-bottom: 14px; outline: none;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--pink); }
+  textarea { min-height: 90px; resize: vertical; }
+  .seg { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 18px; }
+  .seg button { background: rgba(0,0,0,.3); border: 1px solid var(--line); color: var(--text); border-radius: 14px; padding: 12px 8px; font: 600 14px Inter, sans-serif; cursor: pointer; }
+  .seg button small { display: block; color: var(--muted); font-weight: 400; font-size: 11px; margin-top: 2px; }
+  .seg button.on { border-color: var(--pink); background: rgba(255,61,127,.16); box-shadow: 0 0 16px rgba(255,61,127,.3); }
+  .seg.three { grid-template-columns: repeat(3, 1fr); }
+
+  /* buttons */
+  .btn { display: block; width: 100%; border: 0; border-radius: 999px; padding: 16px 18px; font: 800 14px Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--text); cursor: pointer; }
+  .btn + .btn { margin-top: 10px; }
+  .btn.primary { background: linear-gradient(90deg, var(--pink), var(--pink-deep)); box-shadow: 0 0 26px rgba(255,61,127,.45); }
+  .btn.ghost { background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .row .btn + .btn { margin-top: 0; }
+  .link { display: block; margin: 16px auto 0; background: none; border: 0; color: var(--muted); font: 600 14px Inter, sans-serif; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+
+  /* cards */
+  .card {
+    position: relative; border-radius: 26px; padding: 30px 22px; margin-bottom: 18px; min-height: 260px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    background: linear-gradient(160deg, #3d0e22, #1c0710 70%);
+    border: 1.5px solid rgba(255,90,140,.55);
+    box-shadow: 0 0 40px rgba(255,61,127,.28), inset 0 0 40px rgba(255,61,127,.08);
+    animation: deal .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.h1 { border-color: rgba(240,194,123,.7); box-shadow: 0 0 40px rgba(240,194,123,.22), inset 0 0 40px rgba(240,194,123,.06); }
+  .card.h3 { border-color: rgba(255,106,61,.75); box-shadow: 0 0 46px rgba(255,80,60,.38), inset 0 0 40px rgba(255,80,60,.1); }
+  .card-badge { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; margin-bottom: 10px;
+    background: radial-gradient(circle at 35% 30%, #5a1630, #24070f); border: 1.5px solid rgba(255,255,255,.18); }
+  .card-kind { text-transform: uppercase; letter-spacing: .24em; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 16px; }
+  .card-text { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(23px, 6.4vw, 31px); line-height: 1.28; margin: 0; }
+  .card-note { margin-top: 16px; color: var(--muted); font-size: 13px; }
+  @keyframes deal { from { opacity: 0; transform: perspective(800px) rotateY(70deg) scale(.92); } to { opacity: 1; transform: none; } }
+
+  .timer { margin-top: 18px; background: rgba(0,0,0,.35); border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 9px 18px; font: 800 15px Inter, sans-serif; letter-spacing: .08em; cursor: pointer; font-variant-numeric: tabular-nums; }
+  .timer.running { border-color: var(--pink); color: var(--pink); }
+  .timer.done { border-color: var(--gold); color: var(--gold); }
+
+  /* truth / dare tiles */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .tile { aspect-ratio: 3/4; border-radius: 22px; border: 1.5px solid var(--line); cursor: pointer; color: var(--text);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    font: 800 20px 'Playfair Display', serif; letter-spacing: .08em; text-transform: uppercase; animation: deal .45s; }
+  .tile span { font-size: 40px; }
+  .tile small { font: 400 12px Inter, sans-serif; letter-spacing: 0; text-transform: none; color: var(--muted); padding: 0 10px; text-align: center; }
+  .tile.truth { background: linear-gradient(160deg, #3b2140, #1a0a1c); border-color: rgba(190,140,255,.5); box-shadow: 0 0 26px rgba(170,110,255,.2); }
+  .tile.dare { background: linear-gradient(160deg, #4a0f22, #1f070f); border-color: rgba(255,61,127,.6); box-shadow: 0 0 26px rgba(255,61,127,.3); }
+
+  .heat-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--muted); }
+  .center { text-align: center; }
+
+  .how { margin-top: 16px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .how summary { cursor: pointer; font-weight: 600; color: var(--text); text-align: center; list-style: none; }
+  .how summary::-webkit-details-marker { display: none; }
+  .how ol { padding-left: 20px; margin: 12px 0 0; }
+  .how li { margin-bottom: 6px; }
+
+  .fate { font-family: 'Playfair Display', serif; font-size: 34px; text-align: center; min-height: 0; margin: 0 0 12px; color: var(--pink); }
+
+  .custom-list { list-style: none; padding: 0; margin: 16px 0 0; }
+  .custom-list li { display: flex; gap: 10px; align-items: flex-start; background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 8px; font-size: 14px; line-height: 1.4; }
+  .custom-list li div { flex: 1; }
+  .custom-list li small { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 3px; }
+  .custom-list button { background: none; border: 0; color: var(--muted); font-size: 18px; cursor: pointer; padding: 0 4px; }
+  .empty { color: var(--muted); text-align: center; font-size: 14px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ---------------------------------------------------------------
+   CARDS — edit freely. Use {winner} / {loser} to insert names.
+   Add "|30" at the end to show a 30-second timer on that card.
+   Heat: 1 = Playful, 2 = Spicy, 3 = Hot
+---------------------------------------------------------------- */
+const CARDS = {
+  duel: {
+    1: [
+      "Rock, paper, scissors — best of three.",
+      "Staring contest. First to blink or laugh loses.",
+      "Thumb war. Best of three.",
+      "Take turns naming things you love about each other. First to hesitate for 3 seconds loses.",
+      "Guess your partner's all-time favorite snack. Wrong answer loses. Both right or both wrong? Rock, paper, scissors.",
+      "Guess the first thing your partner noticed about you. Wrong answer loses. Tie? Rock, paper, scissors.",
+      "Plank-off. First to drop loses.",
+      "One of you tries to make the other smile for 30 seconds, then switch. Whoever cracks first loses.|30",
+      "Hum a song — your partner has 10 seconds to name it. Take turns. First to miss loses.",
+      "Say the date of your first date out loud, at the same time. Wrong (or slower) loses.",
+      "Stand on one leg, eyes closed. First to put a foot down loses."
+    ],
+    2: [
+      "Hold eye contact a hand-width apart for 30 seconds. First to look away or laugh loses.|30",
+      "Take turns whispering something flirty in each other's ear. First to blush or giggle loses.",
+      "Kiss for 20 seconds — no hands. First to use their hands loses.|20",
+      "Guess where your partner most loves to be kissed. Wrong guess loses. Tie? Rock, paper, scissors.",
+      "Slow dance with no music for 30 seconds. First to laugh loses.|30",
+      "Trace a word on each other's back with a fingertip. Wrong guess loses.",
+      "Trade compliments back and forth. First to repeat one or run out loses."
+    ],
+    3: [
+      "Take turns kissing each other's neck for 20 seconds. Whoever reacts more loses — be honest.|20",
+      "Kiss for 30 seconds without touching anywhere else. First to pull the other closer loses.|30",
+      "Blindfold each other in turn and guess where you're being kissed, three times each. Most misses loses.",
+      "Lock eyes and say \"I want you\" in your most serious voice. First to laugh loses.",
+      "Each of you describes your favorite night together in one sentence. Whoever blushes first loses."
+    ]
+  },
+
+  truth: {
+    1: [
+      "What was your very first impression of me?",
+      "When did you know you wanted to marry me?",
+      "What's one little thing I do that makes you fall for me again?",
+      "Which outfit of mine is your favorite?",
+      "Which date from our past would you love to relive?",
+      "What went through your head the first time we kissed?",
+      "What's something sweet you've never told me because it felt too cheesy?",
+      "When do you find me most attractive on an ordinary day?",
+      "What song makes you think of us?",
+      "What's something you want us to try together this year?",
+      "What's the most romantic thing I've ever done for you?",
+      "If we had a whole day with zero responsibilities, how would you spend it with me?"
+    ],
+    2: [
+      "What's the first thing you notice when I walk into a room?",
+      "Where's your favorite place on my body to kiss?",
+      "What's something I wear that drives you a little crazy?",
+      "What's the most attractive thing I do without realizing it?",
+      "Have you ever daydreamed about me at a totally inappropriate moment? When?",
+      "What's one compliment about my body you've never said out loud?",
+      "What kind of touch from me melts you the fastest?",
+      "What's the most memorable kiss we've ever had, and why?",
+      "If you could relive one night with me, which would it be?",
+      "What's a small move of mine that instantly puts you in the mood?",
+      "What's your favorite thing about the way I kiss?",
+      "Describe a fantasy date with me — ending included."
+    ],
+    3: [
+      "What's a fantasy about me you've never told me?",
+      "What's something you'd like me to do more often in bed?",
+      "What's the hottest moment we've ever shared?",
+      "Where's somewhere unexpected you've imagined us being intimate?",
+      "What do you want me to whisper to you when we're alone?",
+      "What's one thing you want us to try but have been shy to ask?",
+      "Lights on or lights off — and why?",
+      "What's the most irresistible thing I've ever said to you?",
+      "Describe, in detail, how you'd like tonight to end.",
+      "What's my most seductive look, and when do I give it?",
+      "What part of our intimacy do you never want to change?",
+      "Slow and teasing, or fast and intense — tonight?"
+    ]
+  },
+
+  dare: {
+    1: [
+      "Give {winner} a 2-minute shoulder massage.|120",
+      "Slow dance with {winner} to a song they choose.",
+      "Give {winner} three sincere compliments while holding eye contact.",
+      "Recreate your first kiss with {winner} as accurately as you can.",
+      "Hold {winner}'s hands and tell them your favorite memory of you two.",
+      "Feed {winner} a bite of something sweet. They can't use their hands.",
+      "Do your best impression of {winner} flirting with you.",
+      "Write a 4-line love poem for {winner} and read it dramatically.",
+      "Kiss {winner} on the forehead, both cheeks and the nose — slowly.",
+      "Give {winner} a 1-minute hand or foot massage — their choice.|60",
+      "Serenade {winner} with the chorus of your song.",
+      "Let {winner} pick a pet name you must answer to for the rest of the night."
+    ],
+    2: [
+      "Kiss {winner}'s neck slowly for 30 seconds.|30",
+      "Whisper in {winner}'s ear what you love most about their body.",
+      "Sit on {winner}'s lap for the whole next round.",
+      "Give {winner} a 60-second kiss — no hands allowed.|60",
+      "Let {winner} blindfold you, then guess where they kiss you. Three tries.",
+      "Trace a heart on {winner}'s back with your fingertips, as slowly as you can.",
+      "Take off one accessory or piece of clothing — {winner} chooses which.",
+      "Give {winner} your most seductive look for 15 seconds without laughing.|15",
+      "Kiss {winner} somewhere you've never kissed them before.",
+      "Do a sultry 30-second dance for {winner}.|30",
+      "Gently bite {winner}'s lower lip, then pull away.",
+      "Text {winner} something flirty right now — even though they're right next to you."
+    ],
+    3: [
+      "Kiss {winner} anywhere except their lips for 2 minutes.|120",
+      "Remove one piece of {winner}'s clothing — using only your teeth.",
+      "Give {winner} a 3-minute massage wherever they choose.|180",
+      "Whisper exactly what you want to do to {winner} later tonight.",
+      "Let {winner} blindfold you for 2 minutes and do whatever they like (within your limits).|120",
+      "Take off one piece of your own clothing, as slowly as you possibly can.",
+      "Kiss {winner} from their wrist all the way up to their shoulder.",
+      "Without words, show {winner} exactly how you like to be kissed.",
+      "Let {winner} trace a trail with an ice cube (or a cold glass) anywhere they choose.",
+      "For the next two rounds, {winner} decides where your hands go.",
+      "Give {winner} a lap dance for one full song.",
+      "Kiss {winner} for 30 seconds like it's the last kiss of your life.|30"
+    ]
+  },
+
+  hot: {
+    1: [
+      "What's your favorite thing about waking up next to me?",
+      "When did you first think I was attractive?",
+      "What's one word for how I make you feel?",
+      "What memory of us still gives you butterflies?",
+      "Which of our date nights would you rate a perfect 10?",
+      "What's one thing you'd love me to say to you more often?",
+      "What's your favorite feature on my face?",
+      "What do I do that makes it impossible for you to concentrate?"
+    ],
+    2: [
+      "What's my sexiest feature — honestly?",
+      "When did you last catch yourself thinking about me \"that way\" during the day?",
+      "Which of my outfits would you love to take off me?",
+      "Morning, afternoon or night — when do you want me most?",
+      "What's something about me that turns you on that I'd never guess?",
+      "Rate tonight's chemistry from 1 to 10. What would make it a 10?",
+      "Teasing, or getting straight to it?",
+      "Kissing, touching or talking — which gets you there fastest?"
+    ],
+    3: [
+      "If you planned our next night alone, start to finish — what happens?",
+      "What's the boldest thing you've wanted to do with me but haven't?",
+      "Where's the most daring place you'd want to kiss me?",
+      "What's a role you'd like us to play for one night?",
+      "What's your favorite sound I make?",
+      "We have the house to ourselves all weekend. What's the first thing you do?",
+      "What's one thing I did once that you'd love an encore of?",
+      "Tell me one thing you want before we fall asleep tonight."
+    ]
+  }
+};
+
+const FORFEITS = [
+  "A 10-minute massage for {winner}, tonight.",
+  "Breakfast in bed for {winner} this weekend.",
+  "One \"yes\" to a wish of {winner}'s choice.",
+  "A date night planned entirely around {winner}.",
+  "A slow dance in the kitchen, any time {winner} asks this week.",
+  "A love note hidden where {winner} will find it tomorrow."
+];
+
+const HEAT = {
+  1: { name: "Playful", icon: "🥂" },
+  2: { name: "Spicy", icon: "🌶️" },
+  3: { name: "Hot", icon: "🔥" }
+};
+const PASSES = 2;
+
+/* --------------------------- state --------------------------- */
+const KEY = "betweenus.state.v1";
+const CUSTOM_KEY = "betweenus.custom.v1";
+
+function readJSON(key, fallback) {
+  try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch { return fallback; }
+}
+function writeJSON(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+}
+
+function freshGame(names = ["", ""], mode = "build") {
+  return { names, mode, round: 1, lost: [0, 0], passes: [PASSES, PASSES], loser: null, phase: "setup", card: null, kind: null, prev: null, forfeit: null };
+}
+
+let S = readJSON(KEY, null) || freshGame();
+let custom = readJSON(CUSTOM_KEY, []);
+const decks = {};
+const save = () => writeJSON(KEY, S);
+
+const winner = () => S.loser === null ? null : 1 - S.loser;
+const nm = i => S.names[i] || (i === 0 ? "Player 1" : "Player 2");
+const heat = () => S.mode === "build" ? (S.round <= 3 ? 1 : S.round <= 6 ? 2 : 3) : Number(S.mode);
+
+/* --------------------------- decks --------------------------- */
+function parse(raw, h, type) {
+  const [text, secs] = raw.split("|");
+  return { text, s: secs ? Number(secs) : 0, h, type };
+}
+function pool(type, h) {
+  const all = [];
+  for (const lvl of [1, 2, 3]) for (const raw of CARDS[type][lvl]) all.push(parse(raw, lvl, type));
+  for (const c of custom) if (c.type === type) all.push(parse(c.text, c.h, type));
+  // Duels draw from everything up to the current heat; the rest match the heat exactly.
+  let picked = all.filter(c => type === "duel" ? c.h <= h : c.h === h);
+  if (!picked.length) picked = all.filter(c => c.h <= h);
+  return picked.length ? picked : all;
+}
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function draw(type) {
+  const h = heat(), key = type + h;
+  if (!decks[key] || !decks[key].length) decks[key] = shuffle(pool(type, h));
+  return decks[key].pop();
+}
+
+/* --------------------------- helpers --------------------------- */
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+function fill(text) {
+  const w = winner(), l = S.loser;
+  return esc(text)
+    .replace(/\{winner\}/g, `<b>${esc(w === null ? "your partner" : nm(w))}</b>`)
+    .replace(/\{loser\}/g, `<b>${esc(l === null ? "you" : nm(l))}</b>`);
+}
+const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+const heatPill = () => `<span class="heat-pill">${HEAT[heat()].icon} ${HEAT[heat()].name}${S.mode === "build" ? " · building" : ""}</span>`;
+
+/* --------------------------- timer --------------------------- */
+let tick = null;
+function stopTimer() { clearInterval(tick); tick = null; }
+function startTimer(btn, secs) {
+  stopTimer();
+  let left = secs;
+  btn.classList.remove("done");
+  btn.classList.add("running");
+  btn.textContent = fmt(left);
+  tick = setInterval(() => {
+    left--;
+    btn.textContent = fmt(Math.max(left, 0));
+    if (left <= 0) {
+      stopTimer();
+      btn.classList.remove("running");
+      btn.classList.add("done");
+      btn.textContent = "Time! ↻";
+      chime();
+    }
+  }, 1000);
+}
+function chime() {
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch {}
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [660, 880].forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+      const t = ctx.currentTime + i * 0.18;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+      o.start(t); o.stop(t + 0.4);
+    });
+  } catch {}
+}
+
+let wakeLock = null;
+async function keepAwake() {
+  try { if ("wakeLock" in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", () => (wakeLock = null)); } } catch {}
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.phase !== "setup") keepAwake(); });
+
+/* --------------------------- views --------------------------- */
+function topbar() {
+  const score = i => `
+    <div class="score ${S.loser === i && ["choose", "card", "hot"].includes(S.phase) ? "is-loser" : ""}">
+      <div class="name">${esc(nm(i))}</div>
+      <div class="meta"><span>${S.lost[i]} lost</span><span class="dots" title="Passes left">${"●".repeat(S.passes[i])}${"○".repeat(PASSES - S.passes[i])}</span></div>
+    </div>`;
+  return `
+    <div class="topbar">
+      <div class="brand">Between <span>Us</span></div>
+      <div>
+        <button class="icon-btn" data-act="custom">✎ Cards</button>
+        <button class="icon-btn" data-act="end">End</button>
+      </div>
+    </div>
+    <div class="scores">${score(0)}${score(1)}</div>`;
+}
+
+function cardHTML(card, kind, badge, note = "") {
+  return `
+    <div class="card h${card.h}">
+      <div class="card-badge">${badge}</div>
+      <div class="card-kind">${kind} · ${HEAT[card.h].name}</div>
+      <p class="card-text">${fill(card.text)}</p>
+      ${card.s ? `<button class="timer" data-act="timer" data-secs="${card.s}">▶ ${fmt(card.s)} timer</button>` : ""}
+      ${note ? `<div class="card-note">${note}</div>` : ""}
+    </div>`;
+}
+
+const views = {
+  setup() {
+    const modes = [["build", "Let it build", "Playful → Hot"], ["1", "🥂 Playful", "Sweet & flirty"], ["2", "🌶️ Spicy", "Turn it up"], ["3", "🔥 Hot", "No warm-up"]];
+    const inProgress = S.round > 1 || S.lost[0] + S.lost[1] > 0;
+    return `
+      <div class="logo">💞</div>
+      <h1>Between Us</h1>
+      <p class="tag">A private truth-or-dare night for two.<br>Start playful. Let the night build from there.</p>
+      <div class="panel">
+        <label for="n1">Player one</label>
+        <input type="text" id="n1" maxlength="20" placeholder="Your name" value="${esc(S.names[0])}" autocomplete="off">
+        <label for="n2">Player two</label>
+        <input type="text" id="n2" maxlength="20" placeholder="Their name" value="${esc(S.names[1])}" autocomplete="off">
+        <div class="label">Heat</div>
+        <div class="seg">${modes.map(([v, t, s]) => `<button data-act="mode" data-v="${v}" class="${String(S.mode) === v ? "on" : ""}">${t}<small>${s}</small></button>`).join("")}</div>
+        <button class="btn primary" data-act="start">${inProgress ? "Start a new night" : "Start the night"}</button>
+        ${inProgress ? `<button class="btn ghost" data-act="resume">Continue round ${S.round}</button>` : ""}
+      </div>
+      <details class="how">
+        <summary>How to play ▾</summary>
+        <ol>
+          <li>Every round starts with a quick <b>duel</b>. Play it for real, then tap who lost. Can't agree? Let fate decide.</li>
+          <li>The loser picks <b>Truth or Dare</b>. The winner reads it out.</li>
+          <li>Then the loser takes the <b>Hot Seat</b>: one hot question from the winner. (Brave bonus: the winner answers it too.)</li>
+          <li>You each get <b>${PASSES} passes</b> per game. Spend them wisely.</li>
+          <li>In "Let it build" mode the heat goes up every 3 rounds. Either of you can say "pause" at any time, no questions asked.</li>
+          <li>When you call it a night, whoever lost more rounds owes the other a <b>final forfeit</b>.</li>
+        </ol>
+      </details>
+      <button class="link" data-act="custom">✎ Add our own cards</button>`;
+  },
+
+  duel() {
+    return topbar() + `
+      <p class="eyebrow">Round ${S.round} · Duel</p>
+      <div class="center" style="margin-bottom:14px">${heatPill()}</div>
+      ${cardHTML(S.card, "Duel", "⚔️", "Play it, then tap who lost.")}
+      <p class="headline">Who lost?</p>
+      <div class="fate" id="fate"></div>
+      <div class="row">
+        <button class="btn primary" data-act="lost" data-i="0">${esc(nm(0))}</button>
+        <button class="btn primary" data-act="lost" data-i="1">${esc(nm(1))}</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost" data-act="fate">🎲 Let fate decide</button>
+        <button class="btn ghost" data-act="reduel">↻ Other duel</button>
+      </div>`;
+  },
+
+  choose() {
+    const l = S.loser;
+    return topbar() + `
+      <p class="eyebrow">Round ${S.round}</p>
+      <p class="headline"><b>${esc(nm(l))}</b>, you lost this one.</p>
+      <p class="sub">Truth or dare? ${esc(nm(winner()))} reads it to you.</p>
+      <div class="tiles">
+        <button class="tile truth" data-act="pick" data-v="truth"><span>💬</span>Truth<small>Answer honestly</small></button>
+        <button class="tile dare" data-act="pick" data-v="dare"><span>💋</span>Dare<small>No backing out</small></button>
+      </div>
+      <div class="center">${heatPill()}</div>`;
+  },
+
+  card() {
+    const l = S.loser, isTruth = S.kind === "truth";
+    const intro = isTruth
+      ? `<b>${esc(nm(winner()))}</b>, read this to ${esc(nm(l))}:`
+      : `<b>${esc(nm(l))}</b>, your dare:`;
+    return topbar() + `
+      <p class="eyebrow">Round ${S.round} · ${isTruth ? "Truth" : "Dare"}</p>
+      <p class="sub">${intro}</p>
+      ${cardHTML(S.card, isTruth ? "Truth" : "Dare", isTruth ? "💬" : "💋")}
+      <button class="btn primary" data-act="done">${isTruth ? "Answered ✓" : "Done ✓"}</button>
+      <button class="btn ghost" data-act="pass" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Use a pass (${S.passes[l]} left)` : "No passes left — you have to"}</button>`;
+  },
+
+  hot() {
+    const l = S.loser, w = winner();
+    return topbar() + `
+      <p class="eyebrow">Round ${S.round} · Hot Seat</p>
+      <p class="sub"><b>${esc(nm(w))}</b> asks. <b>${esc(nm(l))}</b> answers.</p>
+      ${cardHTML(S.card, "Hot question", "🔥", `Brave bonus: ${esc(nm(w))} answers it too.`)}
+      <button class="btn primary" data-act="answered">Answered — next round</button>
+      <button class="btn ghost" data-act="passhot" ${S.passes[l] ? "" : "disabled"}>${S.passes[l] ? `Use a pass (${S.passes[l]} left)` : "No passes left — you have to"}</button>`;
+  },
+
+  end() {
+    const [a, b] = S.lost;
+    let msg;
+    if (a === b) {
+      msg = `<p class="headline">It's a tie.</p><p class="sub">You each owe the other one long goodnight kiss. 💋</p>`;
+    } else {
+      const loser = a > b ? 0 : 1;
+      msg = `<p class="headline"><b>${esc(nm(1 - loser))}</b> wins the night.</p>
+             <p class="sub">${esc(nm(loser))} owes…</p>
+             <div class="card h3"><div class="card-badge">🎁</div><div class="card-kind">Final forfeit</div><p class="card-text">${esc(S.forfeit).replace(/\{winner\}/g, `<b>${esc(nm(1 - loser))}</b>`)}</p></div>`;
+    }
+    return `
+      <div class="logo">💞</div>
+      <h1 style="font-size:36px">That's a night.</h1>
+      <p class="tag">${esc(nm(0))} lost ${a} · ${esc(nm(1))} lost ${b}</p>
+      ${msg}
+      <button class="btn primary" data-act="again">Play again</button>
+      <button class="btn ghost" data-act="home">Back to start</button>`;
+  },
+
+  custom() {
+    const types = { truth: "Truth", dare: "Dare", hot: "Hot question", duel: "Duel" };
+    const list = custom.length
+      ? `<ul class="custom-list">${custom.map((c, i) => `
+          <li><div><small>${types[c.type]} · ${HEAT[c.h].icon} ${HEAT[c.h].name}</small>${esc(c.text.split("|")[0])}</div>
+          <button data-act="del" data-i="${i}" aria-label="Delete">✕</button></li>`).join("")}</ul>`
+      : `<p class="empty">No cards of your own yet.</p>`;
+    return `
+      <div class="topbar"><div class="brand">Our <span>cards</span></div><button class="icon-btn" data-act="back">← Back</button></div>
+      <div class="panel">
+        <label for="ctype">Type</label>
+        <select id="ctype">${Object.entries(types).map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select>
+        <div class="label">Heat</div>
+        <div class="seg three" id="cheat">${[1, 2, 3].map(h => `<button data-act="cheat" data-v="${h}" class="${h === customHeat ? "on" : ""}">${HEAT[h].icon} ${HEAT[h].name}</button>`).join("")}</div>
+        <label for="ctext">Card</label>
+        <textarea id="ctext" maxlength="240" placeholder="e.g. Tell {winner} the moment you first knew. Add |60 at the end for a 60-second timer."></textarea>
+        <button class="btn primary" data-act="add">Add card</button>
+      </div>
+      ${list}
+      <p class="empty" style="margin-top:14px">Saved on this device only. They mix into the deck with the built-in cards.</p>`;
+  }
+};
+
+function render() {
+  stopTimer();
+  document.getElementById("app").innerHTML = views[S.phase]();
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  save();
+}
+
+/* --------------------------- actions --------------------------- */
+function nextRound() {
+  S.round++;
+  S.loser = null;
+  S.kind = null;
+  S.card = draw("duel");
+  S.phase = "duel";
+}
+
+let customHeat = 2;
+let fating = false;
+
+const actions = {
+  mode(el) { S.mode = el.dataset.v; document.querySelectorAll("[data-act=mode]").forEach(b => b.classList.toggle("on", b === el)); save(); },
+  start() {
+    const n1 = document.getElementById("n1").value.trim(), n2 = document.getElementById("n2").value.trim();
+    S = freshGame([n1, n2], S.mode);
+    S.card = draw("duel");
+    S.phase = "duel";
+    keepAwake();
+    render();
+  },
+  resume() {
+    S.names = [document.getElementById("n1").value.trim(), document.getElementById("n2").value.trim()];
+    S.phase = S.loser === null ? "duel" : S.card && S.kind ? (S.card.type === "hot" ? "hot" : "card") : "choose";
+    if (!S.card) S.card = draw("duel");
+    keepAwake();
+    render();
+  },
+  lost(el) { S.loser = Number(el.dataset.i); S.lost[S.loser]++; S.phase = "choose"; render(); },
+  fate() {
+    if (fating) return;
+    fating = true;
+    const out = document.getElementById("fate");
+    let n = 0;
+    const spin = setInterval(() => {
+      out.textContent = nm(n++ % 2);
+      if (n > 14) {
+        clearInterval(spin);
+        const pick = Math.random() < 0.5 ? 0 : 1;
+        out.textContent = `${nm(pick)} 🎲`;
+        setTimeout(() => { fating = false; actions.lost({ dataset: { i: pick } }); }, 900);
+      }
+    }, 90);
+  },
+  reduel() { S.card = draw("duel"); render(); },
+  pick(el) { S.kind = el.dataset.v; S.card = draw(S.kind); S.phase = "card"; render(); },
+  done() { S.card = draw("hot"); S.kind = "hot"; S.phase = "hot"; render(); },
+  pass() { if (!S.passes[S.loser]) return; S.passes[S.loser]--; actions.done(); },
+  answered() { nextRound(); render(); },
+  passhot() { if (!S.passes[S.loser]) return; S.passes[S.loser]--; nextRound(); render(); },
+  timer(el) { startTimer(el, Number(el.dataset.secs)); },
+  end() {
+    if (S.phase === "end") return;
+    S.forfeit = FORFEITS[Math.floor(Math.random() * FORFEITS.length)];
+    S.phase = "end";
+    render();
+  },
+  again() { S = freshGame(S.names, S.mode); S.card = draw("duel"); S.phase = "duel"; render(); },
+  home() { S = freshGame(S.names, S.mode); render(); },
+  custom() { S.prev = S.phase; S.phase = "custom"; render(); },
+  back() { S.phase = S.prev && S.prev !== "custom" ? S.prev : "setup"; render(); },
+  cheat(el) { customHeat = Number(el.dataset.v); document.querySelectorAll("[data-act=cheat]").forEach(b => b.classList.toggle("on", b === el)); },
+  add() {
+    const box = document.getElementById("ctext");
+    const text = box.value.trim();
+    if (!text) { box.focus(); return; }
+    const type = document.getElementById("ctype").value;
+    custom.push({ type, h: customHeat, text });
+    writeJSON(CUSTOM_KEY, custom);
+    for (const k in decks) delete decks[k];
+    render();
+    document.getElementById("ctype").value = type;
+  },
+  del(el) {
+    custom.splice(Number(el.dataset.i), 1);
+    writeJSON(CUSTOM_KEY, custom);
+    for (const k in decks) delete decks[k];
+    render();
+  }
+};
+
+document.getElementById("app").addEventListener("click", e => {
+  const el = e.target.closest("[data-act]");
+  if (el && actions[el.dataset.act]) actions[el.dataset.act](el);
+});
+
+if (!views[S.phase]) S.phase = "setup";
+if (S.phase === "custom") S.phase = S.prev && S.prev !== "custom" ? S.prev : "setup";
+render();
+</script>
+</body>
+</html>
