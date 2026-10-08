@@ -203,6 +203,8 @@
 <script>
 /* ---------------------------------------------------------------
    CARDS — edit freely. Use {winner} / {loser} to insert names.
+   For the winner: {they} {them} {their} {theyre} become she/her/her/she's or he/him/his/he's,
+   and {part} becomes pussy or cock. {mypart} is the loser's own (pussy or cock).
    Add "|30" at the end to show a 30-second timer on that card.
    Start with "her:" or "him:" to only show it when she / he is the loser.
    Heat: 1 = Playful, 2 = Spicy, 3 = Hot, 4 = After Dark
@@ -225,7 +227,7 @@ const CARDS = {
     2: [
       "Hold eye contact a hand-width apart for 30 seconds. First to look away or laugh loses.|30",
       "Take turns whispering something flirty in each other's ear. First to blush or giggle loses.",
-      "Kiss for 20 seconds — no hands. First to use their hands loses.|20",
+      "Kiss for 20 seconds — no hands. First one to use hands loses.|20",
       "Guess where your partner most loves to be kissed. Wrong guess loses. Tie? Rock, paper, scissors.",
       "Slow dance with no music for 30 seconds. First to laugh loses.|30",
       "Trace a word on each other's back with a fingertip. Wrong guess loses.",
@@ -323,7 +325,7 @@ const CARDS = {
       "If you could change one thing about our sex life, what would it be?",
       "Toys: yes, no, or curious?",
       "Do you like being in control, or being controlled? Which one tonight?",
-      "When was the last time you touched yourself thinking about me?",
+      "When was the last time you played with your {mypart} thinking about me?",
       "her: Since we got married, has another man ever caught your eye? What was it about him?",
       "him: Since we got married, has another woman ever caught your eye? What was it about her?"
     ]
@@ -332,53 +334,53 @@ const CARDS = {
   dare: {
     1: [
       "Give {winner} a 2-minute shoulder massage.|120",
-      "Slow dance with {winner} to a song they choose.",
+      "Let {winner} choose a song, then slow dance with {them}.",
       "Give {winner} three sincere compliments while holding eye contact.",
       "Recreate your first kiss with {winner} as accurately as you can.",
-      "Hold {winner}'s hands and tell them your favorite memory of you two.",
-      "Feed {winner} a bite of something sweet. They can't use their hands.",
+      "Hold {winner}'s hands and tell {them} your favorite memory of you two.",
+      "Feed {winner} a bite of something sweet. {They} can't use {their} hands.",
       "Do your best impression of {winner} flirting with you.",
       "Write a 4-line love poem for {winner} and read it dramatically.",
       "Kiss {winner} on the forehead, both cheeks and the nose — slowly.",
-      "Give {winner} a 1-minute hand or foot massage — their choice.|60",
+      "Give {winner} a 1-minute hand or foot massage — {their} choice.|60",
       "Serenade {winner} with the chorus of your song.",
       "Let {winner} pick a pet name you must answer to for the rest of the night."
     ],
     2: [
       "Kiss {winner}'s neck slowly for 30 seconds.|30",
-      "Whisper in {winner}'s ear what you love most about their body.",
+      "Whisper in {winner}'s ear what you love most about {their} body.",
       "Sit on {winner}'s lap for the whole next round.",
       "Give {winner} a 60-second kiss — no hands allowed.|60",
-      "Let {winner} blindfold you, then guess where they kiss you. Three tries.",
+      "Let {winner} blindfold you and kiss you three times. Guess where each kiss lands.",
       "Trace a heart on {winner}'s back with your fingertips, as slowly as you can.",
       "Take off one accessory or piece of clothing — {winner} chooses which.",
       "Give {winner} your most seductive look for 15 seconds without laughing.|15",
-      "Kiss {winner} somewhere you've never kissed them before.",
+      "Kiss {winner} somewhere you've never kissed {them} before.",
       "Do a sultry 30-second dance for {winner}.|30",
       "Gently bite {winner}'s lower lip, then pull away.",
-      "Text {winner} something flirty right now — even though they're right next to you."
+      "Text {winner} something flirty right now — even though {theyre} right next to you."
     ],
     3: [
-      "Kiss {winner} anywhere except their lips for 2 minutes.|120",
+      "Kiss {winner} anywhere except {their} lips for 2 minutes.|120",
       "Remove one piece of {winner}'s clothing — using only your teeth.",
-      "Give {winner} a 3-minute massage wherever they choose.|180",
+      "Ask {winner} where {they}'d like a massage, then give {them} 3 minutes there.|180",
       "Whisper exactly what you want to do to {winner} later tonight.",
-      "Let {winner} blindfold you for 2 minutes and do whatever they like (within your limits).|120",
+      "Let {winner} blindfold you for 2 minutes and do whatever {they}'d like to you (within your limits).|120",
       "Take off one piece of your own clothing, as slowly as you possibly can.",
-      "Kiss {winner} from their wrist all the way up to their shoulder.",
+      "Kiss {winner} from {their} wrist all the way up to {their} shoulder.",
       "Without words, show {winner} exactly how you like to be kissed.",
-      "Let {winner} trace a trail with an ice cube (or a cold glass) anywhere they choose.",
+      "Let {winner} trace a trail with an ice cube (or a cold glass) anywhere on your body.",
       "For the next two rounds, {winner} decides where your hands go.",
       "Give {winner} a lap dance for one full song.",
       "Kiss {winner} for 30 seconds like it's the last kiss of your life.|30",
       "Kiss {winner}'s stomach slowly, working your way down to the waistband.|60",
       "Take off {winner}'s top and kiss everywhere you uncover.",
       "Whisper three things you want to do to {winner} tonight, in explicit detail.",
-      "Let {winner} put your hand wherever they want it for 30 seconds.|30",
-      "Kiss {winner} while sliding your hands under their clothes.|45",
+      "Let {winner} put your hand anywhere on {their} body for 30 seconds.|30",
+      "Kiss {winner} while sliding your hands under {their} clothes.|45",
       "her: Give {winner} a lap dance in just your underwear.",
       "him: Give {winner} a slow striptease down to your underwear.",
-      "Blindfold {winner}. Kiss your way down their body, stop at the waistband, then start again from the top.|120",
+      "Blindfold {winner}. Kiss your way down {their} body, stop at the waistband, then start again from the top.|120",
       "Undress {winner} from the waist down, slowly, kissing every inch you uncover.",
       "her: Rub {winner}'s cock over his underwear for 60 seconds. He's not allowed to move.|60",
       "him: Rub {winner}'s pussy over her underwear for 60 seconds. She's not allowed to move.|60",
@@ -391,14 +393,14 @@ const CARDS = {
       "Take off your underwear without removing anything else, and hand it to {winner}.",
       "her: Put {winner}'s hands on your breasts, then between your legs. He follows your lead for 60 seconds.|60",
       "him: Put {winner}'s hand on your cock and show her exactly how you like to be stroked, 60 seconds.|60",
-      "Massage {winner} from the neck down, and finish by massaging their private area.|120",
+      "Massage {winner} from the neck down, and finish by massaging {their} {part}.|120",
       "Go topless for the rest of the game.",
       "her: Let {winner} kiss and suck your nipples for 60 seconds.|60",
       "him: Kiss and suck {winner}'s nipples for 60 seconds.|60",
-      "Lick a slow trail from {winner}'s neck down to their navel.",
+      "Lick a slow trail from {winner}'s neck down to {their} navel.",
       "her: Straddle {winner} in just your bra and underwear and kiss him for 60 seconds.|60",
       "him: Pin {winner} against the wall and kiss her neck while your hands roam for 60 seconds.|60",
-      "Let {winner} touch you anywhere they like for 60 seconds. You have to stay perfectly still.|60",
+      "Let {winner} touch you anywhere for 60 seconds. You have to stay perfectly still.|60",
       "Use your tongue on {winner}'s ears, neck and collarbone for 60 seconds.|60",
       "Take off {winner}'s underwear using only your teeth.",
       "her: Rub your pussy over your underwear for 30 seconds while {winner} watches.|30",
@@ -409,17 +411,17 @@ const CARDS = {
     4: [
       "Undress {winner} completely, slowly, one piece at a time.",
       "Kiss {winner}'s inner thighs for one minute.|60",
-      "Blindfold {winner}. For 2 minutes, kiss and touch them anywhere you like.|120",
-      "Use only your mouth to explore {winner}'s naked body for 2 minutes, private area included.|120",
+      "Blindfold {winner}. For 2 minutes, kiss and touch {them} anywhere you like.|120",
+      "Use only your mouth to explore {winner}'s naked body for 2 minutes, {their} {part} included.|120",
       "Undress yourself in front of {winner} like it's a show. Eye contact the whole time.",
-      "Tell {winner}, in detail, what you'd do to them if the game ended right now.",
+      "Tell {winner}, in detail, what you'd do to {them} if the game ended right now.",
       "Give {winner} a full-body oil massage. No clothes allowed.|300",
-      "Lie back with your hands at your sides. {winner} can do anything they want to you for 3 minutes.|180",
-      "Masturbate for 30 seconds while {winner} watches.|30",
-      "Sit on {winner}'s lap facing them and kiss them until the timer runs out.|90",
-      "Act out one of {winner}'s fantasies for 2 minutes. They direct.|120",
+      "Lie back with your hands at your sides. {winner} can do anything to you for 3 minutes.|180",
+      "Play with your {mypart} for 30 seconds while {winner} watches.|30",
+      "Sit on {winner}'s lap facing {them} and kiss {them} until the timer runs out.|90",
+      "Act out one of {winner}'s fantasies for 2 minutes. {winner} directs.|120",
       "Let {winner} tie your wrists with a scarf or tie for the whole next round.",
-      "Pick any spot on {winner}'s body and kiss it until they tell you to stop.",
+      "Pick any spot on {winner}'s body and kiss it until {winner} tells you to stop.",
       "Get into {winner}'s favorite sex position and hold it for 60 seconds. No moving, yet.|60",
       "her: Stay blindfolded for 3 minutes while you suck {winner}'s cock. No hands.|180",
       "him: Stay blindfolded for 3 minutes while you lick {winner}'s pussy. No hands.|180",
@@ -435,8 +437,8 @@ const CARDS = {
       "him: Put on a blindfold. {winner} sucks your cock for 3 minutes, and you can't touch her.|180",
       "her: Stroke {winner}'s cock with your hand for 2 minutes. Bring him close to orgasm, but don't let him finish.|120",
       "him: Rub {winner}'s clitoris with your fingers for 2 minutes. Bring her close to orgasm, but don't let her finish.|120",
-      "Bring {winner} close to orgasm three times with your hands or mouth, stopping each time just before they finish.",
-      "Do a 69 with {winner} for 60 seconds: lick and suck each other's private area at the same time.|60",
+      "Bring {winner} close to orgasm three times with your hands or mouth, stopping each time right before {their} orgasm.",
+      "Do a 69 with {winner} for 60 seconds: lick and suck each other at the same time.|60",
       "her: Kneel in front of {winner} and lick his testicles and cock for 60 seconds.|60",
       "him: Lie down and let {winner} sit on your face. Lick her pussy for 60 seconds.|60",
       "Choose a sex position. Have sex with {winner} for 60 seconds, then stop and go back to the game.|60",
@@ -444,12 +446,12 @@ const CARDS = {
       "her: Get on top and ride {winner}'s cock for 60 seconds, then get off and go back to the game.|60",
       "him: Have sex with {winner} from behind (doggy style) for 60 seconds, then stop and go back to the game.|60",
       "Get completely naked and stay that way for the rest of the game.",
-      "Masturbate for 60 seconds while {winner} watches and tells you what to do.|60",
-      "Show {winner} exactly how you masturbate when you're alone.|60",
-      "Kiss every inch of {winner}'s naked body except their private area. Make them beg for it.|120",
+      "Play with your {mypart} for 60 seconds while {winner} watches and tells you what to do.|60",
+      "Show {winner} exactly how you play with your {mypart} when you're alone.|60",
+      "Kiss every inch of {winner}'s naked body except {their} {part}. Make {them} beg for it.|120",
       "her: Stroke {winner}'s cock with lots of lube (or a toy) for 2 minutes.|120",
       "him: Use a vibrator on {winner}'s clitoris for 2 minutes, or your fingers if you don't have one.|120",
-      "Undress while {winner} watches, then masturbate until they say stop."
+      "Undress while {winner} watches, then play with your {mypart} until {winner} says stop."
     ]
   },
 
@@ -592,6 +594,12 @@ function shuffle(a) {
 function draw(type) {
   const h = heat();
   const role = type === "duel" || S.loser === null ? "both" : S.roles[S.loser];
+  // Intimate dares first: on Playful and Spicy, 7 in 10 dares still come from the Hot / After Dark deck.
+  if (type === "dare" && h < 3 && Math.random() < 0.7) {
+    const key = "dare-intimate" + role;
+    if (!decks[key] || !decks[key].length) decks[key] = shuffle([...pool("dare", 3, role), ...pool("dare", 4, role)]);
+    return decks[key].pop();
+  }
   const key = type + h + role;
   if (!decks[key] || !decks[key].length) decks[key] = shuffle(pool(type, h, role));
   return decks[key].pop();
@@ -599,11 +607,22 @@ function draw(type) {
 
 /* --------------------------- helpers --------------------------- */
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+// Pronouns and body words for the winner ({they} {them} {their} {theyre} {part}) and the loser ({mypart}).
+const WORDS = {
+  her: { they: "she", them: "her", their: "her", theyre: "she's", part: "pussy" },
+  him: { they: "he", them: "him", their: "his", theyre: "he's", part: "cock" }
+};
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 function fill(text) {
   const w = winner(), l = S.loser;
+  const ww = WORDS[w === null ? "him" : S.roles[w]] || WORDS.him;
+  const lw = WORDS[l === null ? "her" : S.roles[l]] || WORDS.her;
   return esc(text)
     .replace(/\{winner\}/g, `<b>${esc(w === null ? "your partner" : nm(w))}</b>`)
-    .replace(/\{loser\}/g, `<b>${esc(l === null ? "you" : nm(l))}</b>`);
+    .replace(/\{loser\}/g, `<b>${esc(l === null ? "you" : nm(l))}</b>`)
+    .replace(/\{mypart\}/g, lw.part)
+    .replace(/\{(They|Their|Theyre)\}/g, (_, k) => cap(ww[k.toLowerCase()]))
+    .replace(/\{(they|them|their|theyre|part)\}/g, (_, k) => ww[k]);
 }
 const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 const heatPill = () => `<span class="heat-pill">${HEAT[heat()].icon} ${HEAT[heat()].name}${S.mode === "build" ? " · building" : ""}</span>`;
