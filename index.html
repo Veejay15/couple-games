@@ -7,9 +7,9 @@
 <meta name="theme-color" content="#14060b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Between Us">
-<title>Between Us</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💞</text></svg>">
+<meta name="apple-mobile-web-app-title" content="Couples Dare">
+<title>Couples Dare</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
@@ -69,8 +69,28 @@
   .sub { text-align: center; color: var(--muted); margin: 0 0 18px; font-size: 14px; line-height: 1.5; }
   .sub b, .headline b, .card-text b { color: var(--pink); font-weight: inherit; }
 
-  .logo { width: 84px; height: 84px; margin: 18px auto 0; border-radius: 50%; display: grid; place-items: center; font-size: 40px;
-    background: radial-gradient(circle at 35% 30%, #ff7aa8, var(--pink-deep)); box-shadow: 0 0 40px rgba(255,61,127,.6), inset 0 0 0 3px rgba(255,255,255,.25); }
+  /* Couples Dare brand: mask app icon, glowing gradient title, tagline, feature pills */
+  .logo { width: 100px; height: 100px; margin: 14px auto 0; border-radius: 26px; display: grid; place-items: center;
+    background: radial-gradient(circle at 40% 30%, #6a1838, #2a0716 75%);
+    border: 2px solid #f3a6a6;
+    box-shadow: 0 0 30px rgba(255,120,150,.55), 0 0 70px rgba(255,61,127,.25), inset 0 0 22px rgba(255,61,127,.35); }
+  .logo svg { width: 100%; height: 100%; }
+  .logo.small { width: 72px; height: 72px; border-radius: 20px; }
+  .wordmark { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 48px; line-height: 1.1; margin: 14px 0 6px; text-align: center;
+    background: linear-gradient(90deg, #ff9cc0 0%, #ffc9b4 55%, #f6c27a 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 16px rgba(255,140,170,.45)); text-shadow: none; }
+  .subtitle { text-align: center; color: #f3dfe6; font-size: 16px; margin: 0 0 14px; }
+  .tagline { text-align: center; font-size: 22px; font-weight: 600; margin: 0;
+    background: linear-gradient(90deg, #ff8fb8, #f6c27a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .tagline-row { display: flex; align-items: center; justify-content: center; gap: 10px; color: #f6c27a; font-size: 14px; }
+  .divider { display: flex; align-items: center; gap: 8px; max-width: 280px; margin: 8px auto 16px; color: var(--pink); font-size: 14px; }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(240,194,123,.7)); }
+  .divider::after { background: linear-gradient(90deg, rgba(240,194,123,.7), transparent); }
+  .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0 0 20px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    background: rgba(255,255,255,.04); border: 1px solid rgba(255,140,170,.45); }
+  .pill.gold { border-color: rgba(240,194,123,.6); }
+  .pill.purple { border-color: rgba(190,140,255,.6); }
 
   /* panels & inputs */
   .panel { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 22px; padding: 18px; }
@@ -179,7 +199,9 @@
     .btn { padding: 13px 16px; }
     .btn + .btn { margin-top: 8px; }
     .tile { aspect-ratio: 4/5; }
-    .logo { width: 64px; height: 64px; font-size: 30px; margin-top: 6px; }
+    .logo { width: 76px; height: 76px; border-radius: 20px; margin-top: 6px; }
+    .wordmark { font-size: 40px; margin-top: 10px; }
+    .tagline { font-size: 19px; }
     h1 { font-size: 36px; }
     .tag { margin-bottom: 14px; }
   }
@@ -539,6 +561,21 @@ const HEAT = {
   4: { name: "After Dark", icon: "🖤" }
 };
 const LEVELS = [1, 2, 3, 4];
+
+// App icon: a pink and a purple smiling mask with a gold heart.
+const MASK = "M-18,-19 Q0,-27 18,-19 Q21,5 0,23 Q-21,5 -18,-19 Z";
+const FACE = `<path d="M-12,-9 Q-7.5,-14 -3,-9" fill="none" stroke="#3a0a1c" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M3,-9 Q7.5,-14 12,-9" fill="none" stroke="#3a0a1c" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M-10,3 Q0,15 10,3 Q0,8 -10,3 Z" fill="#3a0a1c"/>`;
+const ICON = `<svg viewBox="0 0 100 100" aria-hidden="true">
+  <defs>
+    <linearGradient id="mPink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa3c6"/><stop offset="1" stop-color="#e2306f"/></linearGradient>
+    <linearGradient id="mPurple" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfa8ff"/><stop offset="1" stop-color="#7a3de0"/></linearGradient>
+  </defs>
+  <g transform="translate(62 40) rotate(14)"><path d="${MASK}" fill="url(#mPurple)"/>${FACE}</g>
+  <g transform="translate(38 50) rotate(-12)"><path d="${MASK}" fill="url(#mPink)" stroke="#2a0716" stroke-width="1.5"/>${FACE}</g>
+  <path transform="translate(71 73) scale(1.9)" d="M0,6 C-10,-2 -6,-12 0,-6 C6,-12 10,-2 0,6 Z" fill="#4a0f26" stroke="#f6c27a" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>`;
 const PASSES = 2;
 
 /* --------------------------- state --------------------------- */
@@ -676,7 +713,7 @@ function topbar() {
     </div>`;
   return `
     <div class="topbar">
-      <div class="brand">Between <span>Us</span></div>
+      <div class="brand">Couples <span>Dare</span></div>
       <div>
         <button class="icon-btn" data-act="custom">✎ Cards</button>
         <button class="icon-btn" data-act="end">End</button>
@@ -705,9 +742,17 @@ const views = {
     const inProgress = S.round > 1 || S.lost[0] + S.lost[1] > 0;
     const roleSeg = i => `<div class="seg roles">${["her", "him"].map(r => `<button data-act="role" data-i="${i}" data-v="${r}" class="${S.roles[i] === r ? "on" : ""}">${r === "her" ? "Her" : "Him"}</button>`).join("")}</div>`;
     return `
-      <div class="logo">💞</div>
-      <h1>Between Us</h1>
-      <p class="tag">A private truth-or-dare night for two.<br>Start playful. Let the night build from there.</p>
+      <div class="logo">${ICON}</div>
+      <h1 class="wordmark">Couples Dare</h1>
+      <p class="subtitle">Truths, Dares &amp; Hot Questions for Two</p>
+      <div class="tagline-row"><span>✦</span><p class="tagline">Play together tonight</p><span>✦</span></div>
+      <div class="divider">♡</div>
+      <div class="pills">
+        <span class="pill">💬 Truths</span>
+        <span class="pill gold">💋 Dares</span>
+        <span class="pill">🔥 Hot Seat</span>
+        <span class="pill purple">⚔️ Duels</span>
+      </div>
       <div class="panel">
         <label for="n1">Player one</label>
         <div class="name-row"><input type="text" id="n1" maxlength="20" placeholder="Your name" value="${esc(S.names[0])}" autocomplete="off">${roleSeg(0)}</div>
@@ -814,8 +859,8 @@ const views = {
     }
     return `
       <div class="stage">
-        <div class="logo">💞</div>
-        <h1 style="font-size:36px">That's a night.</h1>
+        <div class="logo small">${ICON}</div>
+        <h1 class="wordmark" style="font-size:36px">That's a night.</h1>
         <p class="tag">${esc(nm(0))} lost ${a} · ${esc(nm(1))} lost ${b}</p>
         ${msg}
       </div>

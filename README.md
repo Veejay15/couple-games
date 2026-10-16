@@ -1,4 +1,4 @@
-# Between Us
+# Couples Dare
 
 A private truth-or-dare game for two. It's one static page (`index.html`) with no build step.
 
