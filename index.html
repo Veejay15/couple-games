@@ -589,18 +589,18 @@ function writeJSON(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
 }
 
-function freshGame(names = ["", ""], mode = "build", roles = ["her", "him"]) {
+function freshGame(names = ["", ""], mode = "build", roles = ["him", "her"]) {
   return { names, mode, roles, round: 1, lost: [0, 0], passes: [PASSES, PASSES], loser: null, phase: "setup", card: null, kind: null, prev: null, forfeit: null };
 }
 
 let S = readJSON(KEY, null) || freshGame();
-S.roles = S.roles || ["her", "him"];
+S.roles = S.roles || ["him", "her"];
 let custom = readJSON(CUSTOM_KEY, []);
 const decks = {};
 const save = () => writeJSON(KEY, S);
 
 const winner = () => S.loser === null ? null : 1 - S.loser;
-const nm = i => S.names[i] || (i === 0 ? "Player 1" : "Player 2");
+const nm = i => S.names[i] || (i === 0 ? "Husband" : "Wife");
 const heat = () => S.mode === "build" ? (S.round <= 2 ? 1 : S.round <= 5 ? 2 : S.round <= 8 ? 3 : 4) : Number(S.mode);
 const FOR = { both: "Both of us", her: "Her only", him: "Him only" };
 
@@ -754,10 +754,10 @@ const views = {
         <span class="pill purple">⚔️ Duels</span>
       </div>
       <div class="panel">
-        <label for="n1">Player one</label>
-        <div class="name-row"><input type="text" id="n1" maxlength="20" placeholder="Your name" value="${esc(S.names[0])}" autocomplete="off">${roleSeg(0)}</div>
-        <label for="n2">Player two</label>
-        <div class="name-row"><input type="text" id="n2" maxlength="20" placeholder="Their name" value="${esc(S.names[1])}" autocomplete="off">${roleSeg(1)}</div>
+        <label for="n1">Husband</label>
+        <div class="name-row"><input type="text" id="n1" maxlength="20" placeholder="His name" value="${esc(S.names[0])}" autocomplete="off">${roleSeg(0)}</div>
+        <label for="n2">Wife</label>
+        <div class="name-row"><input type="text" id="n2" maxlength="20" placeholder="Her name" value="${esc(S.names[1])}" autocomplete="off">${roleSeg(1)}</div>
         <div class="label">Heat</div>
         <div class="seg">${modes.map(([v, t, s]) => `<button data-act="mode" data-v="${v}" class="${String(S.mode) === v ? "on" : ""} ${v === "build" ? "wide" : ""}">${t}<small>${s}</small></button>`).join("")}</div>
         <button class="btn primary" data-act="start">${inProgress ? "Start a new night" : "Start the night"}</button>
